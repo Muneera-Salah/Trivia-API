@@ -88,8 +88,171 @@ GET '/categories'
 '6' : "Sports"}
 
 ```
+## Endpoints
 
+### GET '/categories'
 
+- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+- Request Arguments: None
+- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
+```
+{
+  "categories": {
+    "1": "cat1", 
+    "2": "cat2", 
+    "3": "cat3"
+  }, 
+  "success": true
+}
+```
+### GET '/questions'
+- Fetches a dictionary of questions in which the keys are the id, questions, answer, category and difficulty
+- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+- Request Arguments: page number
+- Returns: list of categories, list of current Categories, a total of Questions and success status. 
+```
+{
+  "categories": {
+    "1": "cat1", 
+    "2": "cat2", 
+    "3": "cat3"
+  }, 
+  "currentCategory": "", 
+  "questions": [
+    {
+      "answer": "a1", 
+      "category": "1", 
+      "difficulty": 1, 
+      "id": 1, 
+      "question": "q1"
+    }, 
+    {
+      "answer": "a2", 
+      "category": "2", 
+      "difficulty": 3, 
+      "id": 2, 
+      "question": "q2"
+    }, 
+    {
+      "answer": "a3", 
+      "category": "3", 
+      "difficulty": 3, 
+      "id": 3, 
+      "question": "q3"
+    }
+  ], 
+  "success": true, 
+  "totalQuestions": 3
+}
+```
+### DELETE '/questions/{question_id}'
+- Delete question by a given id
+- Request Arguments: question id
+- Returns: question id was deleted and success status. 
+```
+{
+  "deleted": 1,
+  "success": true
+}
+```
+### POST '/questions'
+- Create a new question with all details values
+- Request Arguments: value of question, answer, category and difficulty
+- Returns: success status
+```
+{
+  "success": true
+}
+```
+### POST '/questions/search'
+- Searches for questions by a given string 
+- Request Arguments: string of search term
+- Returns: list of questions that contain the search term, list of current Category, a total of Questions and success status. 
+```
+{
+  "currentCategory": [
+    {
+      "id": 1,
+      "type": "cat1"
+    },
+    {
+      "id": 2,
+      "type": "cat2"
+    },
+    {
+      "id": 3,
+      "type": "cat3"
+    }
+  ],
+  "questions": [
+    {
+      "answer": "a3",
+      "category": "3",
+      "difficulty": 3,
+      "id": 3,
+      "question": "q3"
+    },
+    {
+      "answer": "a3",
+      "category": "3",
+      "difficulty": 3,
+      "id": 4,
+      "question": "q3"
+    }
+  ],
+  "success": true,
+  "totalQuestions": 2
+}
+```
+### GET '/categories/{category_id}/questions'
+- Fetches a dictionary of questions by a given category
+- Request Arguments: category id
+- Returns: list of questions at a given category, list of current Category, a total of Questions and success status. 
+```
+{
+  "currentCategory": [
+    {
+      "id": 1,
+      "type": "cat1"
+    },
+    {
+      "id": 2,
+      "type": "cat2"
+    },
+    {
+      "id": 3,
+      "type": "cat3"
+    }
+  ],
+  "questions": [
+    {
+      "answer": "a2",
+      "category": "2",
+      "difficulty": 3,
+      "id": 2,
+      "question": "q2"
+    }
+  ],
+  "success": true,
+  "totalQuestions": 1
+}
+```
+### POST '/quizzes'
+- get questions randomly to by a given category or all
+- Request Arguments: category id or all = 0
+- Returns: random question with values question, answer, category, difficulty and success status.
+```
+{
+  "question": {
+    "answer": "a2",
+    "category": "1",
+    "difficulty": 3,
+    "id": 2,
+    "question": "q2"
+  },
+  "success": true
+}
+```
 ## Testing
 To run the tests, run
 ```
