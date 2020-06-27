@@ -110,7 +110,6 @@ def create_app(test_config=None):
         question.delete()
         return jsonify({
           'success': True,
-          'deleted': question_id
         })
 
     except:
@@ -135,7 +134,8 @@ def create_app(test_config=None):
     new_category = body.get('category', None)
 
     try:
-      question = Question(question=new_question, answer=new_answer, difficulty=new_difficulty, category=new_category)
+      question = Question(question=new_question, answer=new_answer,
+                          category=new_category, difficulty=new_difficulty)
       question.insert()
       body['id'] = Question.id
       
@@ -219,6 +219,7 @@ def create_app(test_config=None):
   def get_questions_quiz():
     body = request.get_json()
     quiz_category = body.get('quiz_category', None)
+    previous_questions = body.get('previous_questions', None)
 
     try:
       if quiz_category['id'] == 0 :
@@ -232,10 +233,16 @@ def create_app(test_config=None):
         abort(404)
       else:
         random_question = random.choice(formatted_questions)
-        return jsonify({
-          'success': True,
-          'question': random_question
-        })
+        if random_question['id'] not in previous_questions:
+          return jsonify({
+            'success': True,
+            'question': random_question
+          })
+        else:
+          return jsonify({
+            'success': True,
+            'question': None
+          })
 
     except:
       abort(422)  

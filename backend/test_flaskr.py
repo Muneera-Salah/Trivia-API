@@ -60,13 +60,21 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
 
+    def test_422_if_detete_question(self):
+        res = self.client().delete('/questions/1000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'unprocessable')
+
     def test_delete_question(self):
         res = self.client().delete('/questions/1')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['deleted'], 1)
+
 
     def test_create_new_question(self):
         res = self.client().post('/questions', json=self.new_question)
@@ -106,8 +114,16 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
 
+    def test_422_get_quizze_questions(self):
+        res = self.client().post('/quizzes', json={'previous_questions': [], 'quiz_category': {'type': 'cat1000', 'id': '1000'}})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'unprocessable')
+        
     def test_get_quizze_questions(self):
-        res = self.client().post('/quizzes', json={'quiz_category': {'type': 'cat1', 'id': '1'}})
+        res = self.client().post('/quizzes', json={'previous_questions': [], 'quiz_category': {'type': 'cat1', 'id': '1'}})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
