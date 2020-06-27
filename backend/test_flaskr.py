@@ -86,6 +86,14 @@ class TriviaTestCase(unittest.TestCase):
         data = json.loads(res.data)
         pass  
 
+    def test_404_if_search_questions(self):
+        res = self.client().post('/questions/search', json={'searchTerm': 'TestQuestionnotinserted'})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
+
     def test_search_questions(self):
         res = self.client().post('/questions/search', json={'searchTerm': 'TestQuestion'})
         data = json.loads(res.data)
